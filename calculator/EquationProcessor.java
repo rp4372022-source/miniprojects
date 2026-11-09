@@ -1,57 +1,44 @@
 package miniprojects.calculator;
 
-public class EquationProcessor {
-    private String operation(StringBuilder eqn, int i){
-        int num1 = Integer.parseInt(String.valueOf(eqn.charAt(i-1)));
-        int num2 = Integer.parseInt(String.valueOf(eqn.charAt(i+1)));
-        
-        int res = switch(String.valueOf(eqn.charAt(i))){
-            case "+" ->  num1 + num2;
-            case "-" ->  num1 - num2;
-            case "*" ->  num1 * num2;
-            case "/" ->  num1 / num2;
-            default -> 0;
-        };
-        return String.valueOf(res);
-    }
-    
-    public int processEquation(String equation){
-        if(equation.length() <= 2) 
-            return Integer.parseInt(equation);
+import java.util.List;
 
-        StringBuilder eqn = new StringBuilder(equation);
-        
-        while(eqn.length() != 1){
-            //Division
-            for(int i=0; i<eqn.length(); i++){
-                if(String.valueOf(eqn.charAt(i)).equals("/")){
-                    // FIX 2 & 3: Atomic replacement and index alignment
-                    eqn.replace(i-1, i+2, operation(eqn, i));
-                    i--; 
-                }
-            }
-            //Multiplication
-            for(int i=0; i<eqn.length(); i++){
-                if(String.valueOf(eqn.charAt(i)).equals("*")){
-                    eqn.replace(i-1, i+2, operation(eqn, i));
-                    i--;
-                }
-            }
-            //Addition
-            for(int i=0; i<eqn.length(); i++){
-                if(String.valueOf(eqn.charAt(i)).equals("+")){
-                    eqn.replace(i-1, i+2, operation(eqn, i));
-                    i--;
-                }
-            }
-            //Subtraction
-            for(int i=0; i<eqn.length(); i++){
-                if(String.valueOf(eqn.charAt(i)).equals("-")){
-                    eqn.replace(i-1, i+2, operation(eqn, i));
-                    i--;
-                }
+public class EquationProcessor {
+    public String getResultOfEquation(List<String> equation){
+        if(equation == null) throw new NullPointerException("No equation found");
+        while(equation.size() != 1){
+            for(int i=0;i<equation.size();i++){
+                if(equation.get(i).equals("/")){
+                    double num1 = Double.parseDouble(equation.remove(i-1));//removed num1
+                    equation.remove(i-1);//removed operator
+                    double num2 = Double.parseDouble(equation.remove(i-1));//removed num2
+
+                    equation.add(i-1, String.valueOf(num1/num2));
+                    continue;
+                } else if(equation.get(i).equals("*")){
+                    double num1 = Double.parseDouble(equation.remove(i-1));//removed num1
+                    equation.remove(i-1);//removed operator
+                    double num2 = Double.parseDouble(equation.remove(i-1));//removed num2
+
+                    equation.add(i-1, String.valueOf(num1*num2));
+                    continue;
+                } else if(equation.get(i).equals("+")){
+                    double num1 = Double.parseDouble(equation.remove(i-1));//removed num1
+                    equation.remove(i-1);//removed operator
+                    double num2 = Double.parseDouble(equation.remove(i-1));//removed num2
+
+                    equation.add(i-1, String.valueOf(num1+num2));
+                    continue;
+                } else if(equation.get(i).equals("-")){
+                    double num1 = Double.parseDouble(equation.remove(i-1));//removed num1
+                    equation.remove(i-1);//removed operator
+                    double num2 = Double.parseDouble(equation.remove(i-1));//removed num2
+
+                    equation.add(i-1, String.valueOf(num1-num2));
+                    continue;
+                } 
             }
         }
-        return Integer.parseInt(eqn.toString());
+        
+        return equation.get(0);
     }
 }
