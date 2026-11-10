@@ -53,14 +53,16 @@ public class TaskRepo {
             throw new RuntimeException();
         }
     }
-    public void deleteTask(int index){ 
+    public void deleteTask(String task_name){ 
         try (Connection connection = JDBCutil.getConnection()){
-            String sql = "DELETE FROM tasks WHERE task_id = ?;";
+            //String sql = "DELETE FROM tasks WHERE task_id = ?;";
+            // temp jugaad 
+            String sql = "DELETE FROM tasks WHERE task_name = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1,index);
+            preparedStatement.setString(1,task_name);
             preparedStatement.executeUpdate();
         } catch (SQLException e){
-            e.printStackTrace();
+            e.printStackTrace(); 
         }
 
     }
