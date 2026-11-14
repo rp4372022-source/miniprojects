@@ -1,19 +1,20 @@
 package miniprojects.calculator;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class EquationProcessor {
     private List<String> tempEquationProcessor(List<String> equation, int i){
-        double num1 = Double.parseDouble(equation.remove(i-1));//removed num1
-        String operator = equation.remove(i-1);//removed operator
-        double num2 = Double.parseDouble(equation.remove(i-1));//removed num2
+        BigDecimal num1 = new BigDecimal(equation.remove(i-1));// num1
+        String operator = equation.remove(i-1);// operator
+        BigDecimal num2 = new BigDecimal(equation.remove(i-1));// num2
         
-        double result = switch (operator) {
-            case "+" -> num1 + num2;
-            case "-" -> num1 - num2;
-            case "*" -> num1 * num2;
-            case "/" -> num1 / num2;
-            default -> 0;
+        BigDecimal result = switch (operator) {
+            case "+" -> num1.add(num2);
+            case "-" -> num1.subtract(num2);
+            case "*" -> num1.multiply(num2);
+            case "/" -> num1.divide(num2);
+            default -> BigDecimal.ZERO;
         };
 
         equation.add(i-1, String.valueOf(result));
